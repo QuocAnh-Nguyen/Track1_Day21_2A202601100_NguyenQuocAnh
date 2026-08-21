@@ -7,7 +7,7 @@ Judge dùng prompt trong eval/judge_prompt.md (placeholder {{input}} {{answer}} 
 Model judge mặc định khác model tutor (EVAL_JUDGE_MODEL, mặc định openai/gpt-4o-mini)
 để tránh tự chấm chéo cùng một model.
 """
-import csv, json, os, sys
+import csv, json, os, sys, time
 from pathlib import Path
 
 # tutor.py nằm ở tutor/ (khu vực sản phẩm) — thêm vào sys.path để import được
@@ -96,7 +96,17 @@ def main():
     for i, rec in enumerate(rows, 1):
         print("[%d/%d] %s ... " % (i, len(rows), rec["scenario_id"]), end="", flush=True)
         try:
-            v = judge_row(rec, template)
+            for attempt in range(4):
+                try:
+                    v = judge_row(rec, template)
+                    break
+                except Exception as e:
+                    if "429" in str(e) and attempt < 3:
+                        wait = 15 * (attempt + 1)
+                        print("429 (thử lại sau %ds) ... " % wait, end="", flush=True)
+                        time.sleep(wait)
+                        continue
+                    raise
             _tracer.log_run(
                 name="judge-run",
                 inputs={"scenario_id": rec["scenario_id"], "judge_model": JUDGE_MODEL},
@@ -111,6 +121,7 @@ def main():
                  "error": str(e)}
             print("LỖI: %s" % e)
         verdicts.append(v)
+        time.sleep(5)
 
     with open("verdicts.jsonl", "w", encoding="utf-8") as f:
         for v in verdicts:
