@@ -23,7 +23,7 @@ _tracer = tracing.init_tracer()
 
 # Bảng giá USD / 1M tokens (input, output) — theo platform constants.ts
 PRICING = {"deepseek-v4-flash": (0.44, 1.32), "gpt-4o-mini": (0.15, 0.60),
-           "gemini-2.5-flash-lite": (0.10, 0.40), "gemini-2.5-flash": (0.30, 2.50)}
+           "gemini-3.5-flash-lite": (0.10, 0.40), "gemini-2.5-flash": (0.30, 2.50)}
 
 def estimate_cost_usd(model, usage):
     """Ước tính chi phí 1 lượt chạy; model lạ (chưa có giá) thì trả None."""
@@ -63,7 +63,18 @@ def main():
         if slide:
             rec["slide"] = slide  # giữ lại để judge/report chấm theo đúng bối cảnh
         try:
-            output, meta = tutor.call_tutor(q, slide=slide)
+            # Retry với backoff khi gặp 429 (rate limit)
+            for attempt in range(4):
+                try:
+                    output, meta = tutor.call_tutor(q, slide=slide)
+                    break
+                except Exception as e:
+                    if "429" in str(e) and attempt < 3:
+                        wait = 15 * (attempt + 1)
+                        print("429 (thử lại sau %ds) ... " % wait, end="", flush=True)
+                        time.sleep(wait)
+                        continue
+                    raise
             cost = estimate_cost_usd(tutor.MODEL, meta["usage"])
             rec.update(output=output, raw_content=meta["raw_content"],
                        retrieved=meta["retrieved"], latency_s=meta["latency_s"],
@@ -86,6 +97,7 @@ def main():
             rec.update(error=str(e))
             print("LỖI: %s" % e)
         results.append(rec)
+        time.sleep(5)  # rate limit: 15 RPM → 4s+ giữa mỗi call
 
     with open("results.jsonl", "w", encoding="utf-8") as f:
         for rec in results:
