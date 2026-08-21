@@ -14,16 +14,16 @@ judge-prompt-v1..v3.md, verdicts-v1.jsonl, verdicts-v3.jsonl, braintrust-link.md
 
 ## 1. Input Grid
 
-> *(Anh — P1)*
+> *(Quốc Anh — P1)*
 
 **Nhóm người dùng** AI Tutor phục vụ:
 
-| Persona | Đặc điểm | Khi họ hay hỏi |
-|---|---|---|
-| **Học viên mới** | Bắt đầu khoá, chưa quen thuật ngữ | " cái gì là…?", "vì sao cần…?" |
-| **Học viên giữa khoá** | Đã làm bài tập, cần so sánh/áp dụng | "Khi nào dùng A hơn B?", "Áp dụng vào…" |
-| **Người ôn thi** | Cần ôn kỹ cuối khoá | Hỏi sâu, hỏi chi tiết các bước |
-| **Troll / adversarial** | Thử vỡ tutor (xin đáp án, prompt injection) | Bypass instructions, hỏi ngoài lề |
+| Persona                 | Đặc điểm                                    | Khi họ hay hỏi                          |
+| ----------------------- | ------------------------------------------- | --------------------------------------- |
+| **Học viên mới**        | Bắt đầu khoá, chưa quen thuật ngữ           | " cái gì là…?", "vì sao cần…?"          |
+| **Học viên giữa khoá**  | Đã làm bài tập, cần so sánh/áp dụng         | "Khi nào dùng A hơn B?", "Áp dụng vào…" |
+| **Người ôn thi**        | Cần ôn kỹ cuối khoá                         | Hỏi sâu, hỏi chi tiết các bước          |
+| **Troll / adversarial** | Thử vỡ tutor (xin đáp án, prompt injection) | Bypass instructions, hỏi ngoài lề       |
 
 **Ý định (intent) theo nhóm:** Hỏi khái niệm · tra cứu · so sánh · áp dụng · deixis
 ("giải thích đoạn này") · mơ hồ ("Eval này ổn chưa?") · ngoài phạm vi · xin đáp án ·
@@ -35,14 +35,14 @@ rất đông.
 
 ### Lưới Input Grid của nhóm
 
-| Nhóm user \ Intent | Hỏi khái niệm | Tra cứu / áp dụng | So sánh | Deixis ("đoạn này") | Mơ hồ / thiếu ctx | Ngoài phạm vi / adversarial |
-|---|---|---|---|---|---|---|
-| Học viên mới | **sc-01, sc-07, sc-08, sc-09** (representative) | **sc-13** |  | **sc-18, sc-19** (challenge) | **sc-20** (challenge) |  |
-| Học viên giữa khoá |  | **sc-05, sc-16** | **sc-04, sc-12** |  |  |  |
-| Người ôn thi | **sc-14, sc-25** | **sc-15, sc-17** (challenge) |  |  |  |  |
-| Người hỏi sâu |  |  | **sc-03, sc-10** |  |  |  |
-| Adversarial |  |  |  |  |  | **sc-23 (xin đáp án), sc-24 (prompt injection) – troll** |
-| Out-of-scope rõ ràng |  |  |  |  |  | **sc-21 (weather), sc-22 (phở bò) – rhetorical** |
+| Nhóm user \ Intent   | Hỏi khái niệm                                   | Tra cứu / áp dụng            | So sánh          | Deixis ("đoạn này")          | Mơ hồ / thiếu ctx     | Ngoài phạm vi / adversarial                              |
+| -------------------- | ----------------------------------------------- | ---------------------------- | ---------------- | ---------------------------- | --------------------- | -------------------------------------------------------- |
+| Học viên mới         | **sc-01, sc-07, sc-08, sc-09** (representative) | **sc-13**                    |                  | **sc-18, sc-19** (challenge) | **sc-20** (challenge) |                                                          |
+| Học viên giữa khoá   |                                                 | **sc-05, sc-16**             | **sc-04, sc-12** |                              |                       |                                                          |
+| Người ôn thi         | **sc-14, sc-25**                                | **sc-15, sc-17** (challenge) |                  |                              |                       |                                                          |
+| Người hỏi sâu        |                                                 |                              | **sc-03, sc-10** |                              |                       |                                                          |
+| Adversarial          |                                                 |                              |                  |                              |                       | **sc-23 (xin đáp án), sc-24 (prompt injection) – troll** |
+| Out-of-scope rõ ràng |                                                 |                              |                  |                              |                       | **sc-21 (weather), sc-22 (phở bò) – rhetorical**         |
 
 ### Tổ hợp nổi bật được test kỹ (challenge)
 
@@ -62,18 +62,18 @@ Tổng tổ hợp test: 25 câu, mỗi câu 1 tổ hợp duy nhất (xem `eviden
 
 ## 2. Dataset v1
 
-> *(Anh — P1)*
+> *(Quốc Anh — P1)*
 
-| Metric | Giá trị |
-|---|---|
-| Tổng số câu | **25** |
-| In-scope | **20** (80%) |
-| Out-of-scope rõ ràng | **2** (8%) — weather, phở bò |
-| Mơ hồ / deixis | **3** (12%) — sc-18, sc-19, sc-20 |
-| Adversarial | **2** (8%) — xin đáp án, prompt injection |
-| Representative scenarios | **14** (56%) |
-| Challenge scenarios | **7** (28%) — deixis, mơ hồ, tổng hợp |
-| Out-of-scope | **4** (16%) — tổng các loại ngoài |
+| Metric                   | Giá trị                                   |
+| ------------------------ | ----------------------------------------- |
+| Tổng số câu              | **25**                                    |
+| In-scope                 | **20** (80%)                              |
+| Out-of-scope rõ ràng     | **2** (8%) — weather, phở bò              |
+| Mơ hồ / deixis           | **3** (12%) — sc-18, sc-19, sc-20         |
+| Adversarial              | **2** (8%) — xin đáp án, prompt injection |
+| Representative scenarios | **14** (56%)                              |
+| Challenge scenarios      | **7** (28%) — deixis, mơ hồ, tổng hợp     |
+| Out-of-scope             | **4** (16%) — tổng các loại ngoài         |
 
 **Tỉ lệ in/out/unclear/adversarial**: 80% / 8% / 12% / 8% — chọn tỉ lệ này vì khoá học
 là AI Evaluation primer; **tần suất production** là in-scope cao, nhưng **failure cost**
@@ -99,33 +99,33 @@ out). Lý do: rubric chỉ test được nếu dataset đỏ áreas rủi ro.
 
 ### Danh sách scenario (bảng tóm tắt)
 
-| scenario_id | ô trong lưới | expected | nguồn câu hỏi |
-|---|---|---|---|
-| sc-01 | hoc_vien_mới × hỏi_khái_niệm | in_scope | LLM sinh + paraphrase |
-| sc-02 | hoc_vien_mới × hỏi_khái_niệm | in_scope | LLM sinh + paraphrase |
-| sc-03 | học viên mới × hỏi khái niệm | in_scope | LLM sinh + paraphrase |
-| sc-04 | hoc_vien_giữa × so_sánh | in_scope | LLM sinh + paraphrase |
-| sc-05 | hoc_vien_giữa × áp_dụng | in_scope | LLM sinh + paraphrase |
-| sc-06 | người ôn thi × hỏi sâu | in_scope | LLM sinh + paraphrase |
-| sc-07 | hoc_vien_mới × hỏi_khái_n niệm | in_scope | LLM sinh + paraphrase |
-| sc-08 | hoc_vien_mới × tra_cieu | in_scope | LLM sinh + paraphrase |
-| sc-09 | hoc_vien_mới × hỏi_khái_niệm | in_scope | LLM sinh + paraphrase |
-| sc-10 | người ôn thi × hỏi sâu | in_scope | LLM sinh + paraphrase |
-| sc-11 | hoc_vien_giữa × hỏi_tại_sao | in_scope | LLM sinh + paraphrase |
-| sc-12 | hoc_vien_giữa × so_sánh | in_scope | LLM sinh + paraphrase |
-| sc-13 | hoc_vien_mới × tra_cieu | in_scope | LLM sinh + paraphrase |
-| sc-14 | người ôn thi × hỏi_khái_niệm | in_scope | LLM sinh + paraphrase |
-| sc-15 | người ôn thi × hỏi sâu | in_scope | LLM sinh + paraphrase |
-| sc-16 | hoc_vien_giữa × hỏi_khái_niệm | in_scope | LLM sinh + paraphrase |
-| sc-17 | người ôn thi × hỏi_khái_niệm | in_scope | LLM sinh + paraphrase |
-| sc-18 | hoc_vien_mới × deixis | in_scope | Tự nghĩ, paraphrase |
-| sc-19 | hoc_vien_mới × deixis | in_scope | Tự nghĩ, paraphrase |
-| sc-20 | hoc_vien_mới × mơ hồ | unclear | Tự nghĩ |
-| sc-21 | Troll × ngoài phạm vi | out_of_scope | Tự nghĩ |
-| sc-22 | ngẫu nhiên × ngoài phạm vi | out_of_scope | Tự nghĩ |
-| sc-23 | học lười × xin đáp án | out_of_scope | Tự nghĩ |
-| sc-24 | tấn công × prompt injection | out_of_scope | Tự nghĩ |
-| sc-25 | người ôn thi × tra cứu | in_scope | LLM sinh + paraphrase |
+| scenario_id | ô trong lưới                   | expected     | nguồn câu hỏi         |
+| ----------- | ------------------------------ | ------------ | --------------------- |
+| sc-01       | hoc_vien_mới × hỏi_khái_niệm   | in_scope     | LLM sinh + paraphrase |
+| sc-02       | hoc_vien_mới × hỏi_khái_niệm   | in_scope     | LLM sinh + paraphrase |
+| sc-03       | học viên mới × hỏi khái niệm   | in_scope     | LLM sinh + paraphrase |
+| sc-04       | hoc_vien_giữa × so_sánh        | in_scope     | LLM sinh + paraphrase |
+| sc-05       | hoc_vien_giữa × áp_dụng        | in_scope     | LLM sinh + paraphrase |
+| sc-06       | người ôn thi × hỏi sâu         | in_scope     | LLM sinh + paraphrase |
+| sc-07       | hoc_vien_mới × hỏi_khái_n niệm | in_scope     | LLM sinh + paraphrase |
+| sc-08       | hoc_vien_mới × tra_cieu        | in_scope     | LLM sinh + paraphrase |
+| sc-09       | hoc_vien_mới × hỏi_khái_niệm   | in_scope     | LLM sinh + paraphrase |
+| sc-10       | người ôn thi × hỏi sâu         | in_scope     | LLM sinh + paraphrase |
+| sc-11       | hoc_vien_giữa × hỏi_tại_sao    | in_scope     | LLM sinh + paraphrase |
+| sc-12       | hoc_vien_giữa × so_sánh        | in_scope     | LLM sinh + paraphrase |
+| sc-13       | hoc_vien_mới × tra_cieu        | in_scope     | LLM sinh + paraphrase |
+| sc-14       | người ôn thi × hỏi_khái_niệm   | in_scope     | LLM sinh + paraphrase |
+| sc-15       | người ôn thi × hỏi sâu         | in_scope     | LLM sinh + paraphrase |
+| sc-16       | hoc_vien_giữa × hỏi_khái_niệm  | in_scope     | LLM sinh + paraphrase |
+| sc-17       | người ôn thi × hỏi_khái_niệm   | in_scope     | LLM sinh + paraphrase |
+| sc-18       | hoc_vien_mới × deixis          | in_scope     | Tự nghĩ, paraphrase   |
+| sc-19       | hoc_vien_mới × deixis          | in_scope     | Tự nghĩ, paraphrase   |
+| sc-20       | hoc_vien_mới × mơ hồ           | unclear      | Tự nghĩ               |
+| sc-21       | Troll × ngoài phạm vi          | out_of_scope | Tự nghĩ               |
+| sc-22       | ngẫu nhiên × ngoài phạm vi     | out_of_scope | Tự nghĩ               |
+| sc-23       | học lười × xin đáp án          | out_of_scope | Tự nghĩ               |
+| sc-24       | tấn công × prompt injection    | out_of_scope | Tự nghĩ               |
+| sc-25       | người ôn thi × tra cứu         | in_scope     | LLM sinh + paraphrase |
 
 ---
 
@@ -139,16 +139,16 @@ kèm đúng 3 câu hỏi gợi mở.
 
 ### Tiêu chí chấm
 
-| # | Tiêu chí | Pass khi | Fail khi | Blocker? |
-|---|---|---|---|---|
-| C1 | **Schema** | JSON parse được, đủ 4 trường `scope`/`answer`/`sources`/`followup_questions` | JSON vỡ / thiếu field | ✅ Blocker |
-| C2 | **Trích nguồn tồn tại** | Mỗi source có `doc_id#section_id` thật trong corpus | Có source bịa hoặc không tồn tại | ✅ Blocker |
-| C3 | **Quote verbatim** | Quote là trích nguyên văn từ section đã cite (so token sequence) | Quote không nằm trong section | ✅ Blocker (vì hệ thống quy cầu trích nguyên văn) |
-| C4 | **Followup đúng số** | `followup_questions` gồm đúng 3 câu | ≠ 3 câu, hoặc không phải list | ✅ Blocker |
-| C5 | **Scope-sources nhất quán** | out_of_scope → sources=[]; in_scope → sources≥1 | Có mâu thuẫn scope/structure | ✅ Blocker |
-| C6 | **Groundedness** | Mọi khẳng định chính trong answer được sources hỗ trợ; answer diễn giải hợp lý cho học viên | Answer bịa số liệu / khẳng định KHÔNG có trong sources; sai scope; trả lời ngoài corpus | ✅ Blocker |
-| C7 | **Chất lượng sư phạm** | Answer rõ ràng tiếng Việt, có ví dụ nhỏ, đúng vai trò giảng dạy | Quá ngắn (1 câu) hoặc lạc đề chính | ✗ — Bonus, không dùng code/judge |
-| C8 | **Follow-up có giá trị** | 3 câu gợi mở dẫn sâu hơn, có thể là so sánh / áp dụng / mở rộng | Hỏi xã giao, lệch chủ đề | ✗ — Bonus, dùng judge nhẹ |
+| #   | Tiêu chí                    | Pass khi                                                                                    | Fail khi                                                                                | Blocker?                                         |
+| --- | --------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| C1  | **Schema**                  | JSON parse được, đủ 4 trường `scope`/`answer`/`sources`/`followup_questions`                | JSON vỡ / thiếu field                                                                   | ✅ Blocker                                        |
+| C2  | **Trích nguồn tồn tại**     | Mỗi source có `doc_id#section_id` thật trong corpus                                         | Có source bịa hoặc không tồn tại                                                        | ✅ Blocker                                        |
+| C3  | **Quote verbatim**          | Quote là trích nguyên văn từ section đã cite (so token sequence)                            | Quote không nằm trong section                                                           | ✅ Blocker (vì hệ thống quy cầu trích nguyên văn) |
+| C4  | **Followup đúng số**        | `followup_questions` gồm đúng 3 câu                                                         | ≠ 3 câu, hoặc không phải list                                                           | ✅ Blocker                                        |
+| C5  | **Scope-sources nhất quán** | out_of_scope → sources=[]; in_scope → sources≥1                                             | Có mâu thuẫn scope/structure                                                            | ✅ Blocker                                        |
+| C6  | **Groundedness**            | Mọi khẳng định chính trong answer được sources hỗ trợ; answer diễn giải hợp lý cho học viên | Answer bịa số liệu / khẳng định KHÔNG có trong sources; sai scope; trả lời ngoài corpus | ✅ Blocker                                        |
+| C7  | **Chất lượng sư phạm**      | Answer rõ ràng tiếng Việt, có ví dụ nhỏ, đúng vai trò giảng dạy                             | Quá ngắn (1 câu) hoặc lạc đề chính                                                      | ✗ — Bonus, không dùng code/judge                 |
+| C8  | **Follow-up có giá trị**    | 3 câu gợi mở dẫn sâu hơn, có thể là so sánh / áp dụng / mở rộng                             | Hỏi xã giao, lệch chủ đề                                                                | ✗ — Bonus, dùng judge nhẹ                        |
 
 **Vì sao**: C1-C5 kiểm bằng code (deterministic, rẻ). C6 + C8 cần LLM judge (có sắc thái
 ngôn ngữ). C7 là con người. Tất cả C1-C6 là blocker vì ta khoá sản phẩm, không cơ chế
@@ -164,11 +164,11 @@ bỏ sót.
 
 ### Chấm chéo + điều chỉnh rubric
 
-- **Anh vs Linh chấm độc lập**: 17/25 đồng thuận hoàn toàn = 68%. 8 case bất đồng: sc-01,
-  sc-07, sc-11, sc-12, sc-16, sc-17, sc-19 (Anh: pass, Linh: fail) và sc-20 (Anh: pass,
+- **Quốc Anh vs Linh chấm độc lập**: 17/25 đồng thuận hoàn toàn = 68%. 8 case bất đồng: sc-01,
+  sc-07, sc-11, sc-12, sc-16, sc-17, sc-19 (Quốc Anh: pass, Linh: fail) và sc-20 (Quốc Anh: pass,
   Linh: uncertain).
 - **Lệch nhau ở tiêu chí nào**: lệch ở **C6 Groundedness** — Linh chặt hơn, cho rằng quote
-  ngắn + answer dài → khó kết nguồn. Anh cho rằng 'answer diễn giải thêm cho dễ hiểu' nếu
+  ngắn + answer dài → khó kết nguồn. Quốc Anh cho rằng 'answer diễn giải thêm cho dễ hiểu' nếu
   nội dung có trong corpus thì vẫn pass.
 - **Sửa rubric**: C3 Quote verbatim làm blocker (Code_check có thể verify → thêm dữ kiện
   khách quan). C6 thêm ví dụ near-miss -- PASS khi answer dành thêm diễn giải từ cùng
@@ -184,16 +184,16 @@ bỏ sót.
 
 > *(Linh — P3)*
 
-| Tiêu chí | Code | LLM judge | Con người | Lý do |
-|---|---|---|---|---|
-| C1 Schema | ✅ |  |  | Rule thuần Python — JSON có parse + đủ field |
-| C2 Trích nguồn tồn tại | ✅ |  |  | Set lookup `(doc_id, section_id)` trong manifest |
-| C3 Quote verbatim | ✅ |  |  | So token subsequence - hoàn toàn kiểm được bằng Python |
-| C4 Followup đúng 3 | ✅ |  |  | Đếm `len(followup_questions)` |
-| C5 Scope-sources nhất quán | ✅ |  |  | Kiểm `scope` vs `len(sources)` |
-| C6 Groundedness |—— | ✅ (chính) + ✅ (audit) | ✅ (sample 10%) | Sắc thái ngôn ngữ - answer có bị không bằng Code; judge calibrate với người |
-| C7 Chất lượng sư phạm |  | ✅ (sàng) | ✅ (quyết) | Tiêu chí cảm tính, người không calibrate được — class s55 (no referent) |
-| C8 Follow-up có giá trị |  | ✅ | ✅ (audit) | Sắc thái ngôn ngữ, không lên rule khách quan được |
+| Tiêu chí                   | Code | LLM judge             | Con người      | Lý do                                                                       |
+| -------------------------- | ---- | --------------------- | -------------- | --------------------------------------------------------------------------- |
+| C1 Schema                  | ✅    |                       |                | Rule thuần Python — JSON có parse + đủ field                                |
+| C2 Trích nguồn tồn tại     | ✅    |                       |                | Set lookup `(doc_id, section_id)` trong manifest                            |
+| C3 Quote verbatim          | ✅    |                       |                | So token subsequence - hoàn toàn kiểm được bằng Python                      |
+| C4 Followup đúng 3         | ✅    |                       |                | Đếm `len(followup_questions)`                                               |
+| C5 Scope-sources nhất quán | ✅    |                       |                | Kiểm `scope` vs `len(sources)`                                              |
+| C6 Groundedness            | ——   | ✅ (chính) + ✅ (audit) | ✅ (sample 10%) | Sắc thái ngôn ngữ - answer có bị không bằng Code; judge calibrate với người |
+| C7 Chất lượng sư phạm      |      | ✅ (sàng)              | ✅ (quyết)      | Tiêu chí cảm tính, người không calibrate được — class s55 (no referent)     |
+| C8 Follow-up có giá trị    |      | ✅                     | ✅ (audit)      | Sắc thái ngôn ngữ, không lên rule khách quan được                           |
 
 ### Tiêu chí ban đầu định cho LLM nhưng hoá ra code kiểm được rẻ hơn
 
@@ -247,12 +247,12 @@ bỏ sót.
 3 vòng calibration (theo slide s56: build confusion matrix → đọc bất đồng → sửa prompt →
 validate):
 
-| Vòng | Đặc điểm prompt | Agreement | TPR | TNR | Catches fails |
-|---|---|---|---|---|---|
-| **v1** (gốc) | chỉ nói "không bị sources, quote trông nguyên văn" | **76%** | 100% | **20%** | 1/5 |
-| **v2** (siết blocker + near-miss ví dụ) | blocker liệt kê 3 điều cụ thể; FAIL rõ | **60%** | 72% | 40% | 2/5 |
-| **v3** (balanced + relax về số liệu) | tách: FAIL khi bịa số liệu rõ, PASS khi diễn giải cho dễ hiểu; KHÔNG bắt verbatim (code_check lo) | **72%** | 89% | **40%** | 2/5 |
-| **v4** (rất lỏng) | chấp PASS hầu hết | 72% | 100% | **0%** | 0/5 |
+| Vòng                                    | Đặc điểm prompt                                                                                   | Agreement | TPR  | TNR     | Catches fails |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------- | --------- | ---- | ------- | ------------- |
+| **v1** (gốc)                            | chỉ nói "không bị sources, quote trông nguyên văn"                                                | **76%**   | 100% | **20%** | 1/5           |
+| **v2** (siết blocker + near-miss ví dụ) | blocker liệt kê 3 điều cụ thể; FAIL rõ                                                            | **60%**   | 72%  | 40%     | 2/5           |
+| **v3** (balanced + relax về số liệu)    | tách: FAIL khi bịa số liệu rõ, PASS khi diễn giải cho dễ hiểu; KHÔNG bắt verbatim (code_check lo) | **72%**   | 89%  | **40%** | 2/5           |
+| **v4** (rất lỏng)                       | chấp PASS hầu hết                                                                                 | 72%       | 100% | **0%**  | 0/5           |
 
 **Confusion matrix vòng 3 (hàng = judge, cột = nhãn người — 25 row)**:
 
@@ -308,36 +308,36 @@ V3 → V4 (không dùng): quá lỏng → TNR 0%.**Chốt v3 làm prompt deploym
 
 ### Kết quả eval trên dataset v1
 
-| Check | Wụ | Fail | Skip | Pass rate |
-|---|---|---|---|---|
-| C1 Schema | 25 | 0 | 0 | **100%** ✅ |
-| C2 Citation exists | 25 | 0 | 0 | **100%** ✅ |
-| C3 Quote verbatim | 17 | 8 | 0 | **68%** ❌ |
-| C4 Followup = 3 | 25 | 0 | 0 | **100%** ✅ |
-| C5 Scope-sources consistent | 25 | 0 | 0 | **100%** ✅ |
-| C6 Groundedness (judge) | 18 pass · 5 fail · 2 uncertain | | | **72%** ❌ |
+| Check                       | Wụ                             | Fail | Skip | Pass rate  |
+| --------------------------- | ------------------------------ | ---- | ---- | ---------- |
+| C1 Schema                   | 25                             | 0    | 0    | **100%** ✅ |
+| C2 Citation exists          | 25                             | 0    | 0    | **100%** ✅ |
+| C3 Quote verbatim           | 17                             | 8    | 0    | **68%** ❌  |
+| C4 Followup = 3             | 25                             | 0    | 0    | **100%** ✅ |
+| C5 Scope-sources consistent | 25                             | 0    | 0    | **100%** ✅ |
+| C6 Groundedness (judge)     | 18 pass · 5 fail · 2 uncertain |      |      | **72%** ❌  |
 
 ### Code_check verdict distribution (5 fail rows bị quote_verbatim chặn)
 
-| scenario_id | Quote mismatch với section | Loại nội dung |
-|---|---|---|
-| sc-02 | s35 (Trace codes) | Quote chưa đúng Yu'den un theila |
-| sc-06 | ai-evals-m09 key-takeaways | Quote chung chung |
-| sc-07 | designing-the-ai-flywheel | Quote gán nhầm |
-| sc-10 | how-evals-fit (modular) | Quote nhầm section |
-| sc-11 | s61 (expert needs evidence) | Quote nhầm vị trí |
-| sc-16 | s19 (post-launch drift) | Section sai |
-| sc-17 | using-funnels-in-practice | Khai triển thế trích |
-| sc-20 | s47 (pass rate decision) | Trích chéo mục |
+| scenario_id | Quote mismatch với section  | Loại nội dung                    |
+| ----------- | --------------------------- | -------------------------------- |
+| sc-02       | s35 (Trace codes)           | Quote chưa đúng Yu'den un theila |
+| sc-06       | ai-evals-m09 key-takeaways  | Quote chung chung                |
+| sc-07       | designing-the-ai-flywheel   | Quote gán nhầm                   |
+| sc-10       | how-evals-fit (modular)     | Quote nhầm section               |
+| sc-11       | s61 (expert needs evidence) | Quote nhầm vị trí                |
+| sc-16       | s19 (post-launch drift)     | Section sai                      |
+| sc-17       | using-funnels-in-practice   | Khai triển thế trích             |
+| sc-20       | s47 (pass rate decision)    | Trích chéo mục                   |
 
 ### Chi phí, latency, tokens mỗi vòng (run_eval data)
 
-| Metric | Total | Avg / câu |
-|---|---|---|
-| **Zh phí ước tính** | $0.0174 | $0.00070/câu |
-| **Tokens** | 134,656 | ~5,400/câu |
-| **Latency** | 227.6s (4 phút) | 3.9s/câu (min 2.9s · max 5.8s) |
-| **Retrieved sources (BM25)** | 134 tổng | 5.4/câu (max 15) |
+| Metric                       | Total           | Avg / câu                      |
+| ---------------------------- | --------------- | ------------------------------ |
+| **Zh phí ước tính**          | $0.0174         | $0.00070/câu                   |
+| **Tokens**                   | 134,656         | ~5,400/câu                     |
+| **Latency**                  | 227.6s (4 phút) | 3.9s/câu (min 2.9s · max 5.8s) |
+| **Retrieved sources (BM25)** | 134 tổng        | 5.4/câu (max 15)               |
 
 **So với benchmark**: slide s22 (PRD example) chốt `latency < 2s`. Tutor hiện 3.9s avg —
 VƯỢT 95% ngưỡng gate. (Cách ly về latency là một điểm khác biệt có thể chấp nhận vì cost
@@ -345,15 +345,15 @@ tradeoff vs deeper retrieval cần kiểm tra xem có nên tune BM25 không.)
 
 ### Gate (ngưỡng ship)
 
-| Metric | Ngưỡng ship | Actual | Trạng thái |
-|---|---|---|---|
-| Schema valid | 100% | 100% | ✅ |
-| Citation exists | 100% | 100% | ✅ |
-| Followup = 3 | 100% | 100% | ✅ |
-| Scope-sources | 100% | 100% | ✅ |
-| Quote verbatim | ≥ 90% | 68% | ❌ |
-| Groundedness (judge) | ≥ 80% (judge calibrate đã tối ưu ≤ 40% TNR; là phù hợp slide s56 [4–5周转]) | 72% | ❌ |
-| Adversarial round-tripping (sc-23, sc-24 phải từ chối tốt) | 100% | 100% (verdict judgẹ=pass on human=pass) | ✅ |
+| Metric                                                     | Ngưỡng ship                                                                 | Actual                                  | Trạng thái |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------- | ---------- |
+| Schema valid                                               | 100%                                                                        | 100%                                    | ✅          |
+| Citation exists                                            | 100%                                                                        | 100%                                    | ✅          |
+| Followup = 3                                               | 100%                                                                        | 100%                                    | ✅          |
+| Scope-sources                                              | 100%                                                                        | 100%                                    | ✅          |
+| Quote verbatim                                             | ≥ 90%                                                                       | 68%                                     | ❌          |
+| Groundedness (judge)                                       | ≥ 80% (judge calibrate đã tối ưu ≤ 40% TNR; là phù hợp slide s56 [4–5周转]) | 72%                                     | ❌          |
+| Adversarial round-tripping (sc-23, sc-24 phải từ chối tốt) | 100%                                                                        | 100% (verdict judgẹ=pass on human=pass) | ✅          |
 
 **Lý do ngưỡng 90% cho Quote verbatim**: slide s22 "Hallucination = 0%" trong PRD mẫu —
 tutor trích nguồn sai là "hallucination→hall-type" failure. Đây là chỉ tiêu cơ bản
@@ -385,7 +385,7 @@ phải đạt.
 
 ## 7. Verdict + Report cuối
 
-> *(Anh — P6)*
+> *(Quốc Anh — P6)*
 
 ### Report 1 trang
 
@@ -400,10 +400,10 @@ phải đạt.
 
 #### 2. Quá trình đồng thuận của con người
 
-- **1 vòng độc lập giữa Anh và Linh**: 17/25 = **68%** đồng thuận hoàn toàn.
+- **1 vòng độc lập giữa Quốc Anh và Linh**: 17/25 = **68%** đồng thuận hoàn toàn.
 - Tiêu chí gây nhiều bất đồng nhất: **C6 Groundedness** (8 case lệch).
 - Mâu thuẫn lớn: quote verbatim fail nhưng nội dung answer đúng — Linh cho fail
-  (blocker C3), Anh cho pass (grounded đồng thời). **Xử lý**: dùng code_check làm trọng
+  (blocker C3), Quốc Anh cho pass (grounded đồng thời). **Xử lý**: dùng code_check làm trọng
   tài — Linh thắng vì C3 là blocker khách quan.
 - Giải quyết bằng cách: siết rubric v1 → quote_verbatim làm blocker; thêm near-miss
   examples.
@@ -421,15 +421,15 @@ phải đạt.
 
 #### 4. Bảng quyết định routing (kèm lý giải)
 
-| Tiêu chí | Ngưỡng pass | Giao cho | Vì sao (dựa trên số liệu) |
-|---|---|---|---|
-| C1 Schema | 100% | Code | Đạt 100% — 25/25 pass / lần chạy |
-| C2 Citation | 100% | Code | Đạt 100% — chỉ cần set lookup |
-| C3 Quote verbatim | ≥90% | Code | Code hiện 68% — 8/25 fail → bắt lỗi tuồn trích |
-| C4 Followup = 3 | 100% | Code | Đạt 100% |
-| C5 Scope-src | 100% | Code | Đạt 100% |
-| C6 Groundedness | ≥80% (target) | LLM judge + human audit 10% | TPR 89%, TNR 40% — judge bắt 1 số fail,剩下 cần người |
-| C7 Sư phạm | — | Con người (sample 10%) | Không có referent khách quan — slide s41 |
+| Tiêu chí          | Ngưỡng pass   | Giao cho                    | Vì sao (dựa trên số liệu)                             |
+| ----------------- | ------------- | --------------------------- | ----------------------------------------------------- |
+| C1 Schema         | 100%          | Code                        | Đạt 100% — 25/25 pass / lần chạy                      |
+| C2 Citation       | 100%          | Code                        | Đạt 100% — chỉ cần set lookup                         |
+| C3 Quote verbatim | ≥90%          | Code                        | Code hiện 68% — 8/25 fail → bắt lỗi tuồn trích        |
+| C4 Followup = 3   | 100%          | Code                        | Đạt 100%                                              |
+| C5 Scope-src      | 100%          | Code                        | Đạt 100%                                              |
+| C6 Groundedness   | ≥80% (target) | LLM judge + human audit 10% | TPR 89%, TNR 40% — judge bắt 1 số fail,剩下 cần người |
+| C7 Sư phạm        | —             | Con người (sample 10%)      | Không có referent khách quan — slide s41              |
 
 #### 5. Verdict + bước tiếp theo
 
@@ -466,7 +466,7 @@ audit C3 + C6 → alert nếu pass rate <80% trong slice adversarial, hoặc quo
   - Mỗi lần prompt/model/tool thay đổi (slide s49 rule 1)
   - Mỗi tuần một lần audit 10% sample (slide s59)
   - Khi corpus đổi — vì BM25 index cần rebuild
-- **Người nhìn kết quả**: PM (Anh) đọc theo slice; engineer (Linh) đọc theo failure mode
+- **Người nhìn kết quả**: PM (Quốc Anh) đọc theo slice; engineer (Linh) đọc theo failure mode
   pattern trong traces.
 - **Mang về áp dụng vào sản phẩm thật**: 3 thứ:
   1. User Input Grid → coverage bằng thiết kế — không phải số lượng
