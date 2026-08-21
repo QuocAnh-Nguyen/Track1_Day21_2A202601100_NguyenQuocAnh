@@ -65,10 +65,39 @@ def check_quote_verbatim(rec, section_tokens):
     return True, None
 
 
+def check_followup_count(rec):
+    """followup_questions phải gồm đúng 3 câu — yêu cầu trong system prompt."""
+    out = rec.get("output") or {}
+    if out.get("_parse_error"):
+        return None, "bỏ qua (JSON vỡ)"
+    fq = out.get("followup_questions")
+    if not isinstance(fq, list):
+        return False, "followup_questions không phải list"
+    if len(fq) != 3:
+        return False, f"có {len(fq)} câu hỏi tiếp theo (phải đúng 3)"
+    return True, None
+
+
+def check_scope_sources_consistent(rec):
+    """Câu out_of_scope phải có sources rỗng; câu in_scope phải có ít nhất 1 source."""
+    out = rec.get("output") or {}
+    if out.get("_parse_error"):
+        return None, "bỏ qua (JSON vỡ)"
+    scope = out.get("scope")
+    sources = out.get("sources") or []
+    if scope == "out_of_scope" and len(sources) > 0:
+        return False, f"out_of_scope nhưng có {len(sources)} nguồn (phải rỗng)"
+    if scope == "in_scope" and len(sources) == 0:
+        return False, "in_scope nhưng không có nguồn nào"
+    return True, None
+
+
 CHECKS = [  # thêm check của nhóm vào đây
     ("schema_valid", check_schema),
     ("citation_exists", check_citation_exists),
     ("quote_verbatim", check_quote_verbatim),
+    ("followup_count", check_followup_count),
+    ("scope_sources_consistent", check_scope_sources_consistent),
 ]
 
 
@@ -90,8 +119,10 @@ def main(path="results.jsonl"):
                 ok, reason = fn(rec)
             elif fn is check_citation_exists:
                 ok, reason = fn(rec, valid_ids)
-            else:
+            elif fn is check_quote_verbatim:
                 ok, reason = fn(rec, section_tokens)
+            else:
+                ok, reason = fn(rec)
             if ok is None:
                 line.append(f"{name}: skip")
                 continue
